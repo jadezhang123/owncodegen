@@ -10,7 +10,6 @@ import own.jadezhang.base.common.service.IBaseService;
  /**
  * 《${tableLabel}》 业务逻辑服务接口
  * @author ${copyright.author}
- *
  */
 public interface I${Po}Service<D extends IBaseDAO<T>, T extends BaseDomain> extends IBaseService<D, T> {
 

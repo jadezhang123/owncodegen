@@ -9,7 +9,7 @@
 		<dataModel name="appCode">DUBBOFUL_FRAMEWORK</dataModel>
 		<dataModel name="appName">dubboSample</dataModel>
 		<dataModel name="appLabel">dubbo风格应用框架示例</dataModel>
-		<dataModel name="outputDirectory">/codgen/framework/${copyright.author}/${appName}</dataModel>
+		<dataModel name="outputDirectory">/codegen/framework/${copyright.author}/${appName}</dataModel>
 
 	</project>
 </codgen-config>

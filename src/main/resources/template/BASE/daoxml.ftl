@@ -31,30 +31,37 @@
 		    	</#if>
 		    </#if>
 		    </#list>
-        ) VALUES (
-        	<#assign hasData=false>
-		    <#list table.columnList as column>
-		    <#if column.primaryKey=false>
-		    	<#if hasData==false><#assign hasData=true><#else>,</#if>${'#'}{${column.columnName?uncap_first}}
-		    </#if>
-		    </#list>
-        )
+        ) VALUES (<#assign hasData=false>
+    <#list table.columnList as column>
+        <#if column.primaryKey=false>
+            <#if hasData==false><#assign hasData=true><#else>,</#if>${'#'}{${column.columnName?uncap_first}}
+        </#if>
+    </#list>)
         <selectKey resultType="java.lang.Long" keyProperty="id">
         	SELECT LAST_INSERT_ID() AS ID
         </selectKey>
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO user (name,sex) VALUES
+        INSERT INTO ${tableName} (
+    <#assign hasData=false>
+    <#list table.columnList as column>
+        <#if column.primaryKey==false>
+            <#if hasData==false>
+            ${column.fieldName}
+            <#assign hasData=true><#else>
+           ,${column.fieldName}
+            </#if>
+        </#if>
+    </#list>
+        ) VALUES
         <foreach collection="list" item="item" separator=",">
-            (
-            <#assign hasData=false>
-            <#list table.columnList as column>
-                <#if column.primaryKey=false>
-                    <#if hasData==false><#assign hasData=true><#else>,</#if>${'#'}{${column.columnName?uncap_first}}
-                </#if>
-            </#list>
-            )
+            (<#assign hasData=false>
+    <#list table.columnList as column>
+        <#if column.primaryKey=false>
+            <#if hasData==false><#assign hasData=true><#else>,</#if>${'#'}{item.${column.columnName?uncap_first}}
+        </#if>
+    </#list> )
         </foreach>
     </insert>
     
@@ -62,13 +69,13 @@
     <update id="update" parameterType="${NamespaceDomain}.${Po}">
         UPDATE ${tableName}
         <trim prefix="SET" suffixOverrides=",">
-            <#list table.columnList as column>
-                <#if column.primaryKey=false>
-                    <if test="update.${column.columnName?uncap_first}!=null">
-                    ${column.fieldName} = <@mapperEl 'update.'+column.columnName?uncap_first />,
-                    </if>
-                </#if>
-            </#list>
+    <#list table.columnList as column>
+        <#if column.primaryKey=false>
+            <if test="${column.columnName?uncap_first}!=null">
+                ${column.fieldName} = <@mapperEl column.columnName?uncap_first />,
+            </if>
+        </#if>
+    </#list>
         </trim>
         WHERE
         <#assign hasData=false>
@@ -79,19 +86,18 @@
 		</#list>
     </update>
 	
-	<update id="updateMap">
+	<update id="updateMap" parameterType="java.util.Map">
         UPDATE ${tableName}
         <trim prefix="SET" suffixOverrides=",">
             <#list table.columnList as column>
 		    <#if column.primaryKey=false>
-            <if test="update.${column.columnName?uncap_first}!=null">
-                ${column.fieldName} = <@mapperEl 'update.'+column.columnName?uncap_first />,
+            <if test="${column.columnName?uncap_first}!=null">
+                ${column.fieldName} = <@mapperEl column.columnName?uncap_first />,
             </if>
             </#if>
 		    </#list>
         </trim>
-        WHERE
-        id = <@mapperEl 'update.id'/>
+        WHERE id = <@mapperEl 'id'/>
     </update>
 
     <update id="updateByCondition">
@@ -105,7 +111,6 @@
             </#if>
 		    </#list>
         </trim>
-
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <#list table.columnList as column>
 		    <#if column.primaryKey=false>
@@ -135,7 +140,6 @@
 		</#list>
     </update>
     
-    
     <!-- 按Id删除 -->
     <delete id="deleteById" parameterType="${idJavaType}">
         DELETE FROM ${tableName}
@@ -149,10 +153,8 @@
     </delete>
 
     <!--根据list(ids)删除对象-->
-    <delete id="deleteByIds">
-        DELETE FROM ${tableName}
-        WHERE id in
-        <foreach collection="list" item="id" open="(" separator="," close=")"><@mapperEl 'id'/></foreach>
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM ${tableName} WHERE id in <foreach collection="list" item="id" open="(" separator="," close=")"><@mapperEl 'id'/></foreach>
     </delete>
 
     <delete id="deleteByCondition" parameterType="java.util.Map">
@@ -166,7 +168,7 @@
         </trim>
     </delete>
 
-    <delete id="deleteByProperty" parameterType="java.util.Map">
+    <delete id="deleteByProperty">
         DELETE FROM ${tableName} WHERE
         <@jspEl 'property'/> = <@mapperEl 'value'/>
     </delete>
@@ -185,7 +187,7 @@
         </trim>
     </select>
 
-    <select id="findOne" parameterType="java.util.Map" resultType="${NamespaceDomain}.${Po}">
+    <select id="findOne" resultType="${NamespaceDomain}.${Po}">
         SELECT
         <include refid="Base_Column_List" />
         FROM ${tableName} WHERE
@@ -203,7 +205,7 @@
         </if>
     </select>
 
-    <select id="findAll" resultType="${Po}">
+    <select id="findAll" resultType="${NamespaceDomain}.${Po}">
         SELECT
         <include refid="Base_Column_List" />
         FROM ${tableName}
@@ -217,28 +219,25 @@
         <include refid="Base_Column_List" />
         FROM ${tableName}
         <where>
-
             <if test="condition.whereSql != null">
                 and id in (<@mapperEl 'condition.whereSql'/>)
             </if>
-
             <#list table.columnList as column>
             <if test="condition.${column.columnName?uncap_first}!=null">
                 <@jspEl 'condition.groupOp'/>   ${column.fieldName}  <@jspEl 'condition.' + column.columnName?uncap_first+'.op'/>  <@mapperEl 'condition.' + column.columnName?uncap_first+'.data'/>
             </if>
            </#list>
-
         </where>
 
         <if test="orderBy!=null">
-        ORDER BY <@jspEl 'orderBy'/> <@jspEl 'sortBy'/>
+            ORDER BY <@jspEl 'orderBy'/> <@jspEl 'sortBy'/>
         </if>
         <if test="offset != null">
             limit <@jspEl 'offset'/>, <@jspEl 'rows'/>
         </if>
     </select>
 
-    <select id="count" resultType="java.lang.Integer">
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(*) FROM ${tableName}
         <where>
         <#list table.columnList as column>
@@ -255,8 +254,8 @@
         FROM ${tableName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <#list table.columnList as column>
-            <if test="${column.columnName?uncap_first}!=null">
-                AND ${column.fieldName} like CONCAT('%', <@mapperEl column.columnName?uncap_first/> , '%')
+            <if test="condition.${column.columnName?uncap_first}!=null">
+                AND ${column.fieldName} like CONCAT('%', <@mapperEl 'condition.' + column.columnName?uncap_first/> , '%')
             </if>
             </#list>
         </trim>
@@ -265,8 +264,7 @@
         </if>
     </select>
 
-
-    <select id="queryList" parameterType="java.util.Map" resultType="${NamespaceDomain}.${Po}">
+    <select id="queryList" resultType="${NamespaceDomain}.${Po}">
         SELECT
         <include refid="Base_Column_List" />
         FROM ${tableName}
@@ -282,7 +280,7 @@
         </if>
     </select>
 
-    <select id="queryOne" parameterType="java.util.Map" resultType="${NamespaceDomain}.${Po}">
+    <select id="queryOne" resultType="${NamespaceDomain}.${Po}">
         SELECT
         <include refid="Base_Column_List" />
         FROM ${tableName}
@@ -293,6 +291,9 @@
             </if>
             </#list>
         </trim>
+        <if test="orderBy!=null">
+            ORDER BY <@jspEl 'orderBy'/> <@jspEl 'sortBy'/>
+        </if>
         limit 0,1
     </select>
 

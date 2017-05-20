@@ -13,17 +13,13 @@
 
 package ${NamespaceParam};
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 <#if isCbd>
-own.jadezhang.base.common.param.CreateBaseParam;
+import own.jadezhang.base.common.param.CreateBaseParam;
 <#else>
-own.jadezhang.base.common.param.BaseParam;
+import own.jadezhang.base.common.param.BaseParam;
 </#if>
-
-import java.util.*;
 
 /**
  * 《${tableLabel}》 查询参数实体

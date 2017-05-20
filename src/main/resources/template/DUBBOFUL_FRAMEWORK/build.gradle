@@ -38,6 +38,7 @@ subprojects {
         compile 'org.slf4j:slf4j-api:1.7.21'
         compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
         compile("own.jadezhang.learning:learning-cumquat-spring-zkconfig:0.0.1")
+        compile("own.jadezhang.base:base-common-web:$baseCommonVersion")
         compile fileTree(dir: 'libs', include: ['*.jar'])
 
         testCompile "junit:junit:$junitVersion"
