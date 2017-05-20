@@ -1,0 +1,24 @@
+group 'com.bcs.mycodgen'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    //导入本地的依赖包
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile ('javax.servlet:javax.servlet-api:3.0.1')
+    compile ('commons-lang:commons-lang:2.6')
+    compile ('commons-logging:commons-logging:1.2')
+    compile ('log4j:log4j:1.2.17')
+    compile ('org.apache.ant:ant:1.9.7')
+    compile ("org.freemarker:freemarker:2.3.20")
+    compile ("mysql:mysql-connector-java:5.1.26")
+}

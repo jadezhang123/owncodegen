@@ -1,0 +1,9 @@
+
+apply plugin: 'war'
+
+dependencies {
+
+    compile project(':learning-${appName}-service')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

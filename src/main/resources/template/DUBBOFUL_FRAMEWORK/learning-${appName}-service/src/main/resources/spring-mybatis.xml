@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${'$'}{dbcp.driverClassName}" />
+        <property name="url" value="${'$'}{dbcp.url}" />
+        <property name="password" value="${'$'}{dbcp.password}"/>
+        <property name="username" value="${'$'}{dbcp.username}"/>
+        <property name="initialSize" value="${'$'}{dbcp.initialSize}"/>
+        <property name="maxActive" value="${'$'}{dbcp.maxActive}"/>
+        <property name="maxWait" value="${'$'}{dbcp.maxWait}"/>
+        <property name="defaultAutoCommit" value="${'$'}{dbcp.defaultAutoCommit}"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 显式指定Mapper文件位置 -->
+        <property name="mapperLocations" value="classpath:/mybatis/**/*DAO.xml"/>
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 扫描basePackage下接口 自动生成代理实现类 -->
+    <mybatis:scan base-package="cn.thinkjoy.common.managerui.dao,cn.thinkjoy.qky.${appName}.dao" factory-ref="sqlSessionFactory"/>
+
+
+</beans>

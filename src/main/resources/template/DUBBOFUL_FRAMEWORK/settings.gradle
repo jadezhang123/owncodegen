@@ -1,0 +1,6 @@
+rootProject.name = 'learning-${appName}'
+include 'learning-${appName}-api'
+include 'learning-${appName}-domain'
+include 'learning-${appName}-service'
+include 'learning-${appName}-web'
+

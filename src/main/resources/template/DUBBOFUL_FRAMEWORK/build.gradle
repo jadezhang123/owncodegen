@@ -1,0 +1,67 @@
+
+version '0.0.1-SNATSHOT'
+
+apply plugin: 'java'
+apply from: 'dependencies.gradle'
+sourceCompatibility = 1.7
+
+/*全局配置*/
+allprojects {
+    /*坐标*/
+    group 'own.jadezhang.learning'
+    version '0.0.1-SNATSHOT'
+    /*自带插件*/
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    /*1.7环境*/
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+    /*UTF-8 很重要*/
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.warnings = false
+    }
+}
+
+/** 子项目配置 */
+subprojects {
+
+    /*类库配置*/
+    repositories {
+        mavenLocal()
+        //阿里云maven仓库
+        repositories { maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } }
+        mavenCentral()
+    }
+    dependencies {
+
+        compile 'org.slf4j:slf4j-api:1.7.21'
+        compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
+        compile("own.jadezhang.learning:learning-cumquat-spring-zkconfig:0.0.1")
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+
+        testCompile "junit:junit:$junitVersion"
+        testCompile "org.springframework:spring-test:$springframworkVersion"
+    }
+
+    //生成源码jar
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives jar
+        archives sourcesJar
+    }
+
+    //发布到Maven本地仓库
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "$localMavenRepository")
+            }
+        }
+    }
+
+}
