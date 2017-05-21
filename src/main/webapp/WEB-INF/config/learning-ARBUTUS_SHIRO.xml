@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE codgen-config PUBLIC "-//Apache Software Foundation//DTD Tengen Configuration 1.0//EN" "com/bcs/codgen/resources/codgen-config_1_0.dtd">
 <codgen-config>
-	<project name="learning-dubboSample" label="dubbo示例" outputEncoding="UTF-8" isDefault="true">
+	<project name="learning-arbutus" label="dubbo示例" outputEncoding="UTF-8" isDefault="true">
 		<dbProvider class="com.bcs.codgen.service.impl.MysqlProvider">
 			<jdbcConfig>
 				<driver>com.mysql.jdbc.Driver</driver>
@@ -18,7 +18,7 @@
 			
 		<dataModel name="templateDirectory">template/BASE</dataModel>
 		<dataModel name="outputDirectory">/codegen/code/${copyright.author}/${projectName}</dataModel>
-		<dataModel name="NamespaceProject">own.jadezhang.learning.dubboSample</dataModel>
+		<dataModel name="NamespaceProject">own.jadezhang.learning.arbutus</dataModel>
 		<dataModel name="NamespaceDomain" >${NamespaceProject}.domain.${groupName}</dataModel>
 		<dataModel name="NamespaceParam" >${NamespaceProject}.param.${groupName}</dataModel>
 		<dataModel name="NamespaceDao">${NamespaceProject}.dao.${groupName}</dataModel>
@@ -26,31 +26,31 @@
 		<dataModel name="NamespaceServiceImpl">${NamespaceProject}.service.${groupName}.impl</dataModel>
 		
 		<output name="domain" type="file">
-			learning-dubboSample-domain/src/main/java/${NamespaceDomain?replace(".","/")}/${moduleName?cap_first}.java
+			learning-arbutus-domain/src/main/java/${NamespaceDomain?replace(".","/")}/${moduleName?cap_first}.java
 		</output>
 		<output name="param" type="file">
-			learning-dubboSample-domain/src/main/java/${NamespaceParam?replace(".","/")}/${moduleName?cap_first}Param.java
+			learning-arbutus-domain/src/main/java/${NamespaceParam?replace(".","/")}/${moduleName?cap_first}Param.java
 		</output>
 		<output name="daoxml" type="file">
-			learning-dubboSample-service/src/main/resources/mybatis/${groupName}/${moduleName?cap_first}DAO.xml
+			learning-arbutus-service/src/main/resources/mybatis/${groupName}/${moduleName?cap_first}DAO.xml
 		</output>
 		<output name="domainEx" type="file">
-			learning-dubboSample-domain/src/main/java/${NamespaceDomain?replace(".","/")}/${moduleName?cap_first}Ex.java
+			learning-arbutus-domain/src/main/java/${NamespaceDomain?replace(".","/")}/${moduleName?cap_first}Ex.java
 		</output>
 		<output name="paramEx" type="file">
-			learning-dubboSample-domain/src/main/java/${NamespaceParam?replace(".","/")}/${moduleName?cap_first}ParamEx.java
+			learning-arbutus-domain/src/main/java/${NamespaceParam?replace(".","/")}/${moduleName?cap_first}ParamEx.java
 		</output>
 		<output name="daoxmlEx" type="file">
-			learning-dubboSample-service/src/main/resources/mybatis/${groupName}/${moduleName?cap_first}ExDAO.xml
+			learning-arbutus-service/src/main/resources/mybatis/${groupName}/${moduleName?cap_first}ExDAO.xml
 		</output>
 		<output name="dao" type="file">
-			learning-dubboSample-service/src/main/java/${NamespaceDao?replace(".","/")}/I${moduleName?cap_first}DAO.java
+			learning-arbutus-service/src/main/java/${NamespaceDao?replace(".","/")}/I${moduleName?cap_first}DAO.java
 		</output>
 		<output name="service" type="file">
-			learning-dubboSample-service/src/main/java/${NamespaceService?replace(".","/")}/I${moduleName?cap_first}Service.java
+			learning-arbutus-service/src/main/java/${NamespaceService?replace(".","/")}/I${moduleName?cap_first}Service.java
 		</output>
 		<output name="serviceImpl" type="file">
-			learning-dubboSample-service/src/main/java/${NamespaceServiceImpl?replace(".","/")}/${moduleName?cap_first}ServiceImpl.java
+			learning-arbutus-service/src/main/java/${NamespaceServiceImpl?replace(".","/")}/${moduleName?cap_first}ServiceImpl.java
 		</output>
 	</project>
 </codgen-config>

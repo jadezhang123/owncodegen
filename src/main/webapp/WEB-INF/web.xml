@@ -8,7 +8,8 @@
 		<param-name>codgen.config</param-name>
 		<param-value>
 			../config/learning-DUBBOFUL_FRAMEWORK.xml,
-			../config/learning-DUBBO_SAMPLE.xml
+			../config/learning-DUBBO_SAMPLE.xml,
+			../config/learning-ARBUTUS_SHIRO.xml
 		</param-value>
 	</context-param>
   <welcome-file-list>

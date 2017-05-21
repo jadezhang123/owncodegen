@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 *
 */
 @Service("${po}ServiceImpl")
-public class ${Po}ServiceImpl extends AbstractBaseService<IBaseDAO<${Po}>>, ${Po}>> implements I${Po}Service<IBaseDAO<${Po}>, ${Po}> {
+public class ${Po}ServiceImpl extends AbstractBaseService<IBaseDAO<${Po}>, ${Po}> implements I${Po}Service<IBaseDAO<${Po}>, ${Po}> {
     @Autowired
-    private I${po}DAO ${po}DAO;
+    private I${Po}DAO ${po}DAO;
 
     @Override
     public IBaseDAO<${Po}> getDao() {
